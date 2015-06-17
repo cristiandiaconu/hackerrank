@@ -16,7 +16,10 @@ namespace MergingCommunities
         public class UnionFindNode
         {
             private UnionFindNode _parent;
+            private List<UnionFindNode> _children;
             private uint _rank;
+
+            public int Count { get { return _children.Distinct().Count(); } }
 
             /// <summary>
             /// Creates a new disjoint node, representative of a set containing only the new node.
@@ -24,6 +27,8 @@ namespace MergingCommunities
             public UnionFindNode()
             {
                 _parent = this;
+                _children = new List<UnionFindNode>();
+                _children.Add(this);
             }
 
             /// <summary>
@@ -34,7 +39,12 @@ namespace MergingCommunities
             {
                 if (!ReferenceEquals(_parent, this))
                 {
-                    _parent = _parent.Find();
+                    var newParent = _parent.Find();
+                    if (_parent != newParent)
+                    {
+                        newParent._children.AddRange(_parent._children);
+                        _parent = newParent;
+                    }                    
                 }
                 return _parent;
             }
@@ -62,15 +72,21 @@ namespace MergingCommunities
 
                 if (root1._rank < root2._rank)
                 {
-                    root1._parent = root2;                    
+                    var oldParent = root1._parent;
+                    root1._parent = root2;
+                    root2._children.AddRange(oldParent._children);
                 }
                 else if (root1._rank > root2._rank)
                 {
-                    root2._parent = root1;                    
+                    var oldParent = root2._parent;
+                    root2._parent = root1;
+                    root1._children.AddRange(oldParent._children);
                 }
                 else
                 {
-                    root2._parent = root1;                    
+                    var oldParent = root2._parent;
+                    root2._parent = root1;
+                    root1._children.AddRange(oldParent._children);
                     root1._rank++;
                 }
                 return true;
@@ -112,8 +128,7 @@ namespace MergingCommunities
 
         private static void QueryQ(int i)
         {
-            var parent = communities[i - 1].Find();
-            Console.WriteLine(communities.Count(c => c.Find() == parent));
+            Console.WriteLine(communities[i - 1].Find().Count);
         }
 
         private static void QueryM(int i, int j)
