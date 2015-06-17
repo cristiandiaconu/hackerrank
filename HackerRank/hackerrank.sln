@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TruckTour", "TruckTour\TruckTour.csproj", "{C7907102-E48D-4750-9F25-DC44DCEE981B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LargestRectangle", "LargestRectangle\LargestRectangle.csproj", "{D50CDB02-33F2-49FF-922D-9DAD25EFD71C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinAvgWaitingTime", "MinAvgWaitingTime\MinAvgWaitingTime.csproj", "{A9621C3F-DB03-4239-881C-5AB9DB9C7F2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MergingCommunities", "MergingCommunities\MergingCommunities.csproj", "{71307ADA-5290-4C87-AFBD-F93072B15B88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{A9621C3F-DB03-4239-881C-5AB9DB9C7F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9621C3F-DB03-4239-881C-5AB9DB9C7F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9621C3F-DB03-4239-881C-5AB9DB9C7F2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71307ADA-5290-4C87-AFBD-F93072B15B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71307ADA-5290-4C87-AFBD-F93072B15B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71307ADA-5290-4C87-AFBD-F93072B15B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71307ADA-5290-4C87-AFBD-F93072B15B88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
