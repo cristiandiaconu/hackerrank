@@ -1,0 +1,150 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MinAvgWaitingTime
+{
+    /// <summary>
+    /// https://www.hackerrank.com/challenges/minimum-average-waiting-time
+    /// </summary>
+    class Program
+    {
+        private static int N;
+        private static long[] T;
+        private static long[] L;
+
+        static void Main(string[] args)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+
+            #region Read input
+            N = int.Parse(Console.ReadLine());
+
+            var customers = new List<KeyValuePair<long, long>>();
+            for (int i = 0; i < N; i++)
+            {
+                var values = Console.ReadLine().Split(' ').Select(s => long.Parse(s)).ToList();
+                customers.Add(new KeyValuePair<long, long>(values[0], values[1]));
+            }
+
+            Console.WriteLine("Input: " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+
+            customers.Sort((x, y) =>
+            {
+                var cmp = x.Key.CompareTo(y.Key);
+                if (cmp == 0)
+                {
+                    return x.Value.CompareTo(y.Value);
+                }
+                return cmp;
+            });
+
+            T = customers.Select(c => c.Key).ToArray();
+            L = customers.Select(c => c.Value).ToArray();
+
+            Console.WriteLine("Sorting: " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+
+            #endregion
+
+            // SW = total wait time
+            // Li = pizza time of customer i
+            // Ti = time when customer i arrives
+            // ST = sum of all Ti
+
+            // the problem is similar to minimizing SL in the following
+            // SW = SL - ST
+            // SL = N * Lk0 + (N-1) * Lk1 + (N-2) * Lk2 + ... + LkN
+
+            // so basically find combination k0...kN of 1..N so that SL is minimized.
+
+            var pending = Enumerable.Range(0, N).ToList();
+            var time = 0L;
+            var SL = 0L;
+            var SCL = 0L;
+            var crt = N;
+
+            Debugger.Launch();
+
+            //List<long> time1 = new List<long>();
+
+            Console.WriteLine("Init: " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+
+            while (pending.Any())
+            {
+                //Stopwatch sw2 = Stopwatch.StartNew();
+
+                var min = T[pending[0]];
+                var max = min > time ? min : time;
+
+                var deadTime = min > time ? min - time : 0L;
+
+                var fastest = 0;
+                var alreadyCookedFastestPizzaTime = L[pending[fastest]];
+
+                if (deadTime == 0)
+                {
+                    var ctLast = 0;
+                    while (true)
+                    {
+                        ctLast++;
+
+                        if (ctLast >= pending.Count)
+                        {
+                            break;
+                        }
+
+                        var crtPending = pending[ctLast];
+                        if (T[crtPending] > max)
+                        {
+                            break;
+                        }
+
+                        var cookingC = L[crtPending];
+                        if (cookingC < alreadyCookedFastestPizzaTime)
+                        {
+                            fastest = ctLast;
+                            alreadyCookedFastestPizzaTime = cookingC;
+                        }
+                    }
+                }
+
+                var temp = alreadyCookedFastestPizzaTime + deadTime;
+                SCL += temp;
+                SL += SCL;
+                crt--;
+                time += temp;
+
+                pending.RemoveAt(fastest);
+                // time1.Add(sw2.ElapsedMilliseconds);
+            }
+
+            Console.WriteLine("Loop: " + sw.ElapsedMilliseconds);
+            sw.Reset();
+            sw.Start();
+
+            //Console.WriteLine("Loop Breakdown: " + time1.Sum() + " " + time1.Average() + " " + time1.Min() + " " + time1.Max() + " " + time1.Count);
+
+            var SW = SL - T.Sum();
+
+            Console.WriteLine(SW / N);
+        }
+
+        //private static int FindCustomerAtTime(long time, List<int> pending, out long deadTime)
+        //{
+        //    deadTime = 0;
+
+
+
+        //    return last;
+        //}
+    }
+}
